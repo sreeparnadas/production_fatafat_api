@@ -13,6 +13,7 @@ use App\Http\Controllers\ManualResultController;
 use App\Http\Controllers\Test;
 use App\Http\Controllers\PlayController;
 use App\Http\Controllers\CommonFunctionController;
+use App\Http\Controllers\StockistController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -62,6 +63,8 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     //play_masters
     Route::post('buyTicket',[PlayController::class,'save_play_details']);
 
+    Route::get('results/currentDate',[ResultMasterController::class, 'get_results_by_current_date']);
+
 });
 
 
@@ -97,6 +100,7 @@ Route::group(array('prefix' => 'dev'), function() {
 
     //result_masters
     Route::get('results',[ResultMasterController::class, 'get_results']);
+    Route::get('results/currentDate',[ResultMasterController::class, 'get_results_by_current_date']);
 
     //manual_result
 
@@ -105,6 +109,11 @@ Route::group(array('prefix' => 'dev'), function() {
 
     //test
     Route::get('test',[Test::class, 'index']);
+
+
+    Route::get('stockists',[StockistController::class, 'getAllStockists']);
+    Route::post('stockists',[StockistController::class, 'createStockist']);
+    Route::put('stockists',[StockistController::class, 'updateStockist']);
 
 
 });
