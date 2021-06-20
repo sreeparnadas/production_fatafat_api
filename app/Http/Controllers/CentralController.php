@@ -27,9 +27,9 @@ class CentralController extends Controller
         $jsonData = $manualResultCtrlObj->save_manual_result($request);
         $resultCreatedObj = json_decode($jsonData->content(),true);
 
-        $actionId = 'score_update';
-        $actionData = array('team1_score' => 46);
-        event(new ActionEvent($actionId, $actionData));
+//        $actionId = 'score_update';
+//        $actionData = array('team1_score' => 46);
+//        event(new ActionEvent($actionId, $actionData));
 
         if( !empty($resultCreatedObj) && $resultCreatedObj['success']==1){
             return response()->json(['success'=>1, 'message' => 'Result added'], 200);
