@@ -37,6 +37,7 @@ Route::post("login",[UserController::class,'login']);
 
 Route::post("register",[UserController::class,'register']);
 Route::get("serverTime",[CommonFunctionController::class,'getServerTime']);
+Route::get("backupDatabase",[CommonFunctionController::class,'backup_database']);
 
 Route::group(['middleware' => 'auth:sanctum'], function(){
     //All secure URL's
@@ -116,6 +117,11 @@ Route::group(array('prefix' => 'dev'), function() {
     Route::get('stockists',[StockistController::class, 'getAllStockists']);
     Route::post('stockists',[StockistController::class, 'createStockist']);
     Route::put('stockists',[StockistController::class, 'updateStockist']);
+
+
+    Route::get('terminals',[TerminalController::class, 'getAllTerminals']);
+    Route::post('terminals',[TerminalController::class, 'createTerminal']);
+    Route::put('terminals',[TerminalController::class, 'updateTerminal']);
 
 
     Route::post('createAutoResult', [CentralController::class, 'createResult']);
