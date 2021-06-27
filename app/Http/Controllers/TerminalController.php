@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\CustomVoucher;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\TerminalResource;
 use App\Models\StockistToTerminal;
 use Illuminate\Http\Request;
 /////// for log
@@ -18,8 +19,13 @@ class TerminalController extends Controller
 {
     public function getAllTerminals(){
         $terminals = UserType::find(4)->users;
-        return UserResource::collection($terminals);
+        return TerminalResource::collection($terminals);
     }
+
+    // public function getStockistByTerminalId(){
+    //     $trminals = User::find(StockistToTerminal::whereTerminalId(14)->first()->stockist_id);
+    //     return response()->json(['success'=>0, 'data' => $trminals], 500);
+    // }
 
 
 
@@ -70,18 +76,23 @@ class TerminalController extends Controller
             return response()->json(['success'=>0, 'data' => null, 'error'=>$e->getMessage()], 500);
         }
 
-        return response()->json(['success'=>1,'data'=> new UserResource($user)], 200,[],JSON_NUMERIC_CHECK);
+        return response()->json(['success'=>1,'data'=> new TerminalResource($user)], 200,[],JSON_NUMERIC_CHECK);
     }
 
 
     public function updateTerminal(Request $request){
         $requestedData = (object)$request->json()->all();
+
         $id = $requestedData->id;
         $user_name = $requestedData->userName;
+        $stockist_id = $requestedData->stockistId;
+
         $terminal = User::findOrFail($id);
         $terminal->user_name = $user_name;
+        $terminal->id = $stockist_id;
         $terminal->save();
-        return response()->json(['success'=>1,'data'=> new UserResource($terminal)], 200,[],JSON_NUMERIC_CHECK);
+
+        return response()->json(['success'=>1,'data'=> new TerminalResource($terminal)], 200,[],JSON_NUMERIC_CHECK);
 
     }
 
