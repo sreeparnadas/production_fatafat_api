@@ -13,9 +13,12 @@ use Illuminate\Support\Facades\DB;
 class StockistController extends Controller
 {
     public function getAllStockists(){
+
         $stockists = UserType::find(3)->users;
+//        return response()->json(['success'=>1,'data'=>StockistResource::collection($stockists)], 200,[],JSON_NUMERIC_CHECK);
         return StockistResource::collection($stockists);
     }
+
     public function createStockist(Request $request){
         $requestedData = (object)$request->json()->all();
 
@@ -58,6 +61,13 @@ class StockistController extends Controller
 
         return response()->json(['success'=>1,'data'=> new StockistResource($user)], 200,[],JSON_NUMERIC_CHECK);
     }
+
+
+
+
+
+
+
 
     public function updateStockist(Request $request){
         $requestedData = (object)$request->json()->all();
