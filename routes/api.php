@@ -69,11 +69,17 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     Route::post('buyTicket',[PlayController::class,'save_play_details']);
 
     Route::get('results/currentDate',[ResultMasterController::class, 'get_results_by_current_date']);
+    Route::get('results/lastResult',[ResultMasterController::class, 'get_last_result']);
 
 
     Route::get('stockists',[StockistController::class, 'getAllStockists']);
     Route::post('stockists',[StockistController::class, 'createStockist']);
     Route::put('stockists',[StockistController::class, 'updateStockist']);
+
+    Route::get('terminals',[TerminalController::class, 'getAllTerminals']);
+    Route::post('terminals',[TerminalController::class, 'createTerminal']);
+    Route::put('terminals',[TerminalController::class, 'updateTerminal']);
+    Route::get('terminals/{id}',[TerminalController::class, 'getStockistByTerminalId']);
 
 });
 
