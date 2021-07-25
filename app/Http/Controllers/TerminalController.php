@@ -86,13 +86,7 @@ class TerminalController extends Controller
     public function update_terminal(Request $request){
 
 
-        // $terminal = new User();
-        // $requestedData=User::find($request->input('id'));
-        // $user_name = $requestedData->userName;
-        // $stockist_id = $requestedData->stockistId;
-        // $terminal->user_name = $user_name;
-        // $terminal->id = $stockist_id;
-        // $terminal->save();
+
 
         $requestedData = (object)$request->json()->all();
 
@@ -102,12 +96,22 @@ class TerminalController extends Controller
 
         $terminal = User::findOrFail($terminalId);
         $terminal->user_name = $terminalName;
-        
-        $terminal->id = $stockist_id;
         $terminal->save();
 
-        return response()->json(['success'=>1,'data'=> new TerminalResource($terminal)], 200,[],JSON_NUMERIC_CHECK);
+        $stockistToTerminal = StockistToTerminal::where('terminal_id',$terminalId)->first();
+        if(!empty($stockistToTerminal)){
+            $stockistToTerminal->stockist_id = $stockist_id;
+            $stockistToTerminal->save();
+        }else{
+            $stockistToTerminal = new StockistToTerminal();
+            $stockistToTerminal->terminal_id = $terminalId;
+            $stockistToTerminal->stockist_id = $stockist_id;
+            $stockistToTerminal->save();
+        }
 
+
+        return response()->json(['success'=>1,'data'=> new TerminalResource($terminal)], 200,[],JSON_NUMERIC_CHECK);
+        // return response()->json(['data'=> $stockistToTerminal]);
     }
 
     public function update_balance_to_terminal(Request $request){
