@@ -1,5 +1,6 @@
 <?php
 
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -18,6 +19,7 @@ use App\Http\Controllers\CentralController;
 use App\Http\Controllers\NextGameDrawController;
 use App\Http\Controllers\TerminalController;
 use App\Http\Controllers\CPanelReportController;
+use App\Http\Controllers\TerminalReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -93,6 +95,7 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
 
     Route::get('cPanel/barcodeReport', [CPanelReportController::class, 'barcode_wise_report']);
     Route::get('cPanel/barcodeReport/particulars/{id}', [CPanelReportController::class, 'get_barcode_report_particulars']);
+    Route::get('cPanel/customerSaleReport', [CPanelReportController::class, 'customer_sale_report']);
 });
 
 
@@ -162,6 +165,11 @@ Route::group(array('prefix' => 'dev'), function() {
     Route::get('cPanel/barcodeReport', [CPanelReportController::class, 'barcode_wise_report']);
     Route::get('cPanel/barcodeReport/particulars/{id}', [CPanelReportController::class, 'get_barcode_report_particulars']);
     Route::get('cPanel/barcodeReport/prizeValue/{id}', [CPanelReportController::class, 'get_prize_value_by_barcode']);
+    Route::get('cPanel/customerSaleReport', [CPanelReportController::class, 'customer_sale_report']);
+    Route::get('terminal/barcodeReport',[TerminalReportController::class, 'barcode_wise_report_by_terminal']);
+
+
+    Route::put('terminal/resetPassword', [TerminalController::class, 'reset_terminal_password']);
 
 });
 
