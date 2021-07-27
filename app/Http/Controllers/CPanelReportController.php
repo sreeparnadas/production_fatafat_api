@@ -82,7 +82,7 @@ class CPanelReportController extends Controller
                     ->where('play_masters.id',$play_master_id)
                     ->where('play_details.game_type_id',$game_id)
                     ->where('play_details.number_combination_id',$result_number_combination_id)
-                    ->groupBy('play_masters.id')
+                    ->groupBy('number_combinations.single_number_id')
                     ->first();
             }
             if($game_id == 2){
@@ -165,21 +165,27 @@ group by play_details.play_master_id")[0];
     }
 
     public function customer_sale_report(){
-        $data = DB::select("select max(play_master_id) as play_master_id,terminal_pin,user_name,
-sum(total) as total,round(sum(commission),2) as commission from (
+        $data = DB::select("select max(play_master_id) as play_master_id,terminal_pin,user_name,user_id,
+        sum(total) as total,round(sum(commission),2) as commission from (
         select max(play_masters.id) as play_master_id,users.user_name,users.email as terminal_pin,
         round(sum(play_details.quantity * play_details.mrp)) as total,
-        sum(play_details.quantity * play_details.mrp)* (max(play_details.commission)/100) as commission
+        sum(play_details.quantity * play_details.mrp)* (max(play_details.commission)/100) as commission,
+        play_masters.user_id
         FROM play_masters
         inner join play_details on play_details.play_master_id = play_masters.id
         inner join game_types ON game_types.id = play_details.game_type_id
         inner join users ON users.id = play_masters.user_id
         where play_masters.is_cancelled=0
-        group by play_masters.user_id,users.user_name,play_details.game_type_id,users.email) as table1 group by user_name,terminal_pin");
+        group by play_masters.user_id,users.user_name,play_details.game_type_id,users.email) as table1 group by user_name,user_id,terminal_pin");
 
         foreach($data as $x){
+            $newPrize = 0;
+            $newData = PlayMaster::where('user_id',$x->user_id)->get();
+            foreach($newData as $y) {
+                $newPrize += $this->get_prize_value_by_barcode($y->id);
+            }
             $detail = (object)$x;
-            $detail->prize_value = $this->get_prize_value_by_barcode($detail->play_master_id);
+            $detail->prize_value = $newPrize;
         }
         return response()->json(['success'=> 1, 'data' => $data], 200);
     }
