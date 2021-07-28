@@ -69,6 +69,9 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     Route::get('drawTimes',[DrawMasterController::class,'index']);
     Route::get('drawTimes/dates/{date}',[DrawMasterController::class,'get_incomplete_games_by_date']);
 
+    //game_types
+    Route::get('gameTypes',[GameTypeController::class,'index']);
+
     //manual_result
 
     Route::post('manualResult',[ManualResultController::class, 'save_manual_result']);
@@ -92,9 +95,11 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     Route::put('terminals/balance',[TerminalController::class, 'update_balance_to_terminal']);
 
     Route::get('cPanel/barcodeReport', [CPanelReportController::class, 'barcode_wise_report']);
+    Route::post('cPanel/barcodeReportByDate', [CPanelReportController::class, 'barcode_wise_report_by_date']);
     Route::get('cPanel/barcodeReport/particulars/{id}', [CPanelReportController::class, 'get_barcode_report_particulars']);
     Route::get('cPanel/barcodeReport/prizeValue/{id}', [CPanelReportController::class, 'get_prize_value_by_barcode']);
     Route::get('cPanel/customerSaleReport', [CPanelReportController::class, 'customer_sale_report']);
+    Route::post('cPanel/customerSaleReports', [CPanelReportController::class, 'customer_sale_reports']);
     Route::get('terminal/barcodeReport',[TerminalReportController::class, 'barcode_wise_report_by_terminal']);
 
 
@@ -171,6 +176,7 @@ Route::group(array('prefix' => 'dev'), function() {
     Route::get('cPanel/barcodeReport/particulars/{id}', [CPanelReportController::class, 'get_barcode_report_particulars']);
     Route::get('cPanel/barcodeReport/prizeValue/{id}', [CPanelReportController::class, 'get_prize_value_by_barcode']);
     Route::get('cPanel/customerSaleReport', [CPanelReportController::class, 'customer_sale_report']);
+    Route::post('cPanel/customerSaleReports', [CPanelReportController::class, 'customer_sale_reports']);
     Route::get('terminal/barcodeReport',[TerminalReportController::class, 'barcode_wise_report_by_terminal']);
 
 
