@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\GameTypeResource;
 use App\Models\GameType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class GameTypeController extends Controller
 {
@@ -22,14 +23,27 @@ class GameTypeController extends Controller
 
 
     public function update_payout(Request $request){
-        $requestedData = (object)$request->json()->all();
-        $gameTypeId = $requestedData->gameTypeId;
-        $newPayout = $requestedData->newPayout;
-        $gameType = GameType::find($gameTypeId);
-        $gameType->payout = $newPayout;
-        $gameType->save();
+        $requestedData = $request->json()->all();
+        $inputPayoutDetails = $requestedData;
 
-        return response()->json(['success'=>1,'data'=> new GameTypeResource($gameType)], 200,[],JSON_NUMERIC_CHECK);
+        DB::beginTransaction();
+        try{
+            $outputPayoutDetails = array();
+            foreach($inputPayoutDetails as $inputPayoutDetail){
+                $detail = (object)$inputPayoutDetail;
+                $gameType = GameType::find($detail->gameTypeId);
+                $gameType->payout = $detail->newPayout;
+                $gameType->save();
+                $outputPayoutDetails[] = $gameType;
+            }
+            DB::commit();
+        }catch(\Exception $e){
+            DB::rollBack();
+            return response()->json(['success'=>0, 'data' => null, 'error'=>$e->getMessage()], 500);
+        }
+
+
+        return response()->json(['success'=>1,'data'=> GameTypeResource::collection($outputPayoutDetails)], 200,[],JSON_NUMERIC_CHECK);
     }
 
 
