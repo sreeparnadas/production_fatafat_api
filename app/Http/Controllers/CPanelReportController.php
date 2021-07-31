@@ -53,8 +53,10 @@ class CPanelReportController extends Controller
             ->join('users','users.id','play_masters.user_id')
             ->join('play_details','play_details.play_master_id','play_masters.id')
             ->where('play_masters.is_cancelled',0)
-            ->where('play_masters.created_at','>=',$start_date)
-            ->where('play_masters.created_at','<=',$end_date)
+//            ->where('play_masters.created_at','>=',$start_date)
+//            ->where('play_masters.created_at','<=',$end_date)
+            ->whereRaw('date(play_masters.created_at) >= ?', [$start_date])
+            ->whereRaw('date(play_masters.created_at) <= ?', [$end_date])
             ->groupBy('play_masters.id','play_masters.barcode_number','draw_masters.visible_time','users.email','play_masters.created_at')
             ->orderBy('play_masters.created_at','desc')
             ->get();
@@ -124,11 +126,10 @@ class CPanelReportController extends Controller
                 $tripleGamePrize = PlayMaster::join('play_details','play_masters.id','play_details.play_master_id')
                     ->join('number_combinations','play_details.number_combination_id','number_combinations.id')
                     ->join('game_types','play_details.game_type_id','game_types.id')
-                    ->select(DB::raw("sum(play_details.quantity * game_types.winning_price) as prize_value") )
+                    ->select(DB::raw("play_details.quantity * game_types.winning_price as prize_value") )
                     ->where('play_masters.id',$play_master_id)
                     ->where('play_details.game_type_id',$game_id)
                     ->where('play_details.number_combination_id',$result_number_combination_id)
-                    ->groupBy('play_masters.id')
                     ->first();
             }
         }
