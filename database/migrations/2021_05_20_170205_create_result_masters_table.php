@@ -18,12 +18,13 @@ class CreateResultMastersTable extends Migration
 
             $table->foreignId('draw_master_id')->references('id')->on('draw_masters')->onDelete('cascade');
             $table->foreignId('number_combination_id')->references('id')->on('number_combinations')->onDelete('cascade');
+            $table ->foreignId('game_id')->references('id')->on('games')->onDelete('cascade');
 
             $table->date('game_date');
 
             $table->tinyInteger('inforce')->default(1);
             $table->timestamps();
-            $table->unique(['draw_master_id', 'game_date']);
+            $table->unique(['draw_master_id', 'game_date', 'game_id']);
         });
     }
 
