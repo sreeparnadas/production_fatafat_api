@@ -36,6 +36,8 @@ class ResultMasterController extends Controller
                 })
                 ->leftJoin('number_combinations','result_masters.number_combination_id','number_combinations.id')
                 ->leftJoin('single_numbers','number_combinations.single_number_id','single_numbers.id')
+                ->leftJoin('games','result_masters.game_id','games.id')
+                // ->where('games.id','=',$gameId)
                 ->get();
 
             /*Do Not delete*/
@@ -53,6 +55,55 @@ class ResultMasterController extends Controller
 
         return response()->json(['success'=>1,'data'=>$result_array], 200,[],JSON_NUMERIC_CHECK);
     }
+
+
+
+
+
+    public function get_result_sheet_by_current_date_and_game_id()
+    {
+        $result_dates= Carbon::today();
+        $gameId= ResultMaster::distinct()->orderBy('game_id')->pluck('game_id')->take(40);
+        // echo "test";
+        $result_array = array();
+        foreach($result_dates as $result_date){
+            $temp_array['date'] = $result_date;
+
+
+
+            $data = DrawMaster::select('result_masters.game_date','draw_masters.end_time','number_combinations.triple_number', 'result_masters.game_id',
+                'number_combinations.visible_triple_number','single_numbers.single_number')
+                ->leftJoin('result_masters', function ($join) use ($result_date) {
+                    $join->on('draw_masters.id','=','result_masters.draw_master_id')
+                        ->where('result_masters.game_date','=', $result_date);
+                })
+                ->leftJoin('number_combinations','result_masters.number_combination_id','number_combinations.id')
+                ->leftJoin('single_numbers','number_combinations.single_number_id','single_numbers.id')
+                ->leftJoin('games','result_masters.game_id','games.id')
+                ->where('games.id','=',$gameId)
+                ->get();
+
+            /*Do Not delete*/
+            /* This is another way to use sub query */
+//            $result_query =get_sql_with_bindings(ResultMaster::where('game_date',$result_date));
+//            $data1 = DrawMaster::leftJoin(DB::raw("($result_query) as result_masters"),'draw_masters.id','=','result_masters.draw_master_id')
+//                ->leftJoin('number_combinations','result_masters.number_combination_id','number_combinations.id')
+//                ->leftJoin('single_numbers','number_combinations.single_number_id','single_numbers.id')
+//                ->select('result_masters.game_date','draw_masters.end_time','number_combinations.triple_number','number_combinations.visible_triple_number','single_numbers.single_number')
+//                ->get();
+            $temp_array['result'] = $data;
+            $result_array[] = $temp_array;
+
+        }
+
+        return response()->json(['success'=>1,'data'=>$result_array], 200,[],JSON_NUMERIC_CHECK);
+    }
+
+
+
+
+
+
 
     public function get_result($id)
     {
@@ -114,27 +165,34 @@ class ResultMasterController extends Controller
     public function save_auto_result($draw_id)
     {
         $games = Game::select()->get();
-        foreach ($games as $game){
-            $manualResult = ManualResult::where('game_date',Carbon::today())
-                ->where('draw_master_id',$draw_id)
-                ->where('game_id',$game->id)
-                ->first();
-            if(!empty($manualResult)){
-                $number_combination_for_result = $manualResult->number_combination_id;
-                $gameId = $manualResult->game_id;
-            }else{
-                $selectRandomResult = NumberCombination::all()->random(1)->first();
-                $number_combination_for_result = $selectRandomResult->id;
+        DB::beginTransaction();
+        try{
+            foreach ($games as $game){
+                $manualResult = ManualResult::where('game_date',Carbon::today())
+                    ->where('draw_master_id',$draw_id)
+                    ->where('game_id',$game->id)
+                    ->first();
+                if(!empty($manualResult)){
+                    $number_combination_for_result = $manualResult->number_combination_id;
+                    $gameId = $manualResult->game_id;
+                }else{
+                    $selectRandomResult = NumberCombination::all()->random(1)->first();
+                    $number_combination_for_result = $selectRandomResult->id;
 
-                $selectRandomGame = Game::all()->random(1)->first();
-                $gameId = $selectRandomGame->id;
+                    $selectRandomGame = Game::all()->random(1)->first();
+                    $gameId = $selectRandomGame->id;
+                }
+                $resultMaster = new ResultMaster();
+                $resultMaster->draw_master_id = $draw_id;
+                $resultMaster->number_combination_id = $number_combination_for_result;
+                $resultMaster->game_id = $game->id;
+                $resultMaster->game_date = Carbon::today();
+                $resultMaster->save();
             }
-            $resultMaster = new ResultMaster();
-            $resultMaster->draw_master_id = $draw_id;
-            $resultMaster->number_combination_id = $number_combination_for_result;
-            $resultMaster->game_id = $gameId;
-            $resultMaster->game_date = Carbon::today();
-            $resultMaster->save();
+            DB::commit();
+        }catch (\Exception $e){
+            DB::rollBack();
+            return response()->json(['success'=>0,'exception'=>$e->getMessage(),'error_line'=>$e->getLine(),'file_name' => $e->getFile()], 500);
         }
 
 //        $manualResult = ManualResult::where('game_date',Carbon::today())
