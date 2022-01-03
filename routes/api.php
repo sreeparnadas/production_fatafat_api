@@ -127,6 +127,8 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
 
 Route::group(array('prefix' => 'dev'), function() {
 
+    Route::post('createAutoResult/{id}', [CentralController::class, 'createResult']);
+
     Route::get('getGame', [GameController::class, 'getGame']);
 
     Route::post('getResultByDate', [ResultMasterController::class, 'get_result_by_date']);
@@ -193,6 +195,7 @@ Route::group(array('prefix' => 'dev'), function() {
 
 
     Route::post('createAutoResult', [CentralController::class, 'createResult']);
+
     Route::post('autoResult', [ResultMasterController::class, 'save_auto_result']);
 
     Route::get('nextDrawId', [NextGameDrawController::class, 'getNextDrawIdOnly']);
