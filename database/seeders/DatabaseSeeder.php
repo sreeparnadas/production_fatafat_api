@@ -878,9 +878,9 @@ class DatabaseSeeder extends Seeder
         ]);
 
         NextGameDraw::create(['next_draw_id' => 2, 'last_draw_id' => 1, 'game_id'=>1]);
-        NextGameDraw::create(['next_draw_id' => 2, 'last_draw_id' => 1, 'game_id'=>2]);
-        NextGameDraw::create(['next_draw_id' => 2, 'last_draw_id' => 1, 'game_id'=>3]);
-        NextGameDraw::create(['next_draw_id' => 2, 'last_draw_id' => 1, 'game_id'=>4]);
+        NextGameDraw::create(['next_draw_id' => 12, 'last_draw_id' => 11, 'game_id'=>2]);
+        NextGameDraw::create(['next_draw_id' => 22, 'last_draw_id' => 21, 'game_id'=>3]);
+        NextGameDraw::create(['next_draw_id' => 32, 'last_draw_id' => 31, 'game_id'=>4]);
 
     }
 }
