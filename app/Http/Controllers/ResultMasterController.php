@@ -202,6 +202,7 @@ class ResultMasterController extends Controller
 //            foreach ($games as $game){
 
         $game_id = (DrawMaster::whereId($draw_id)->first())->game_id;
+        $game_gen = (Game::whereId($game_id)->first())->auto_generate;
 
                 $manualResult = ManualResult::where('game_date',Carbon::today())
                     ->where('draw_master_id',$draw_id)
@@ -210,7 +211,8 @@ class ResultMasterController extends Controller
                 if(!empty($manualResult)){
                     $number_combination_for_result = $manualResult->number_combination_id;
                     $gameId = $manualResult->game_id;
-                }else if ($game_id!=1){
+//                }else if ($game_id!=1){
+                }else if ($game_gen == 'yes'){
                     $selectRandomResult = NumberCombination::all()->random(1)->first();
                     $number_combination_for_result = $selectRandomResult->id;
 
