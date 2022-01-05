@@ -43,7 +43,7 @@ class GenerateResult extends Command
      */
     public function handle()
     {
-        LOG::info(Carbon::today());
+        // LOG::info(Carbon::today());
         $centralControllerObj = new CentralController();
         $centralControllerObj->createResult();
     }

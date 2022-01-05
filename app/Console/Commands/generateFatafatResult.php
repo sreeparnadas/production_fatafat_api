@@ -39,8 +39,8 @@ class generateFatafatResult extends Command
      */
     public function handle()
     {
-        LOG::info('Fatafat');
-        LOG::info(Carbon::today());
+        // LOG::info('Fatafat');
+        // LOG::info(Carbon::today());
         $centralControllerObj = new CentralController();
         $centralControllerObj->createResult(1);
     }
