@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\DrawMasterResource;
 use App\Models\DrawMaster;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -16,10 +17,13 @@ class DrawMasterController extends Controller
         return response()->json(['success'=>1,'data'=>DrawMasterResource::collection($result)], 200,[],JSON_NUMERIC_CHECK);
     }
 
-    public function get_incomplete_games_by_date($date){
-        $result = DrawMaster::whereDoesnthave('result_masters', function($q) use ($date) {
-            $q->where('game_date', '=', $date);
-        })->get();
+    public function get_incomplete_games_by_date($id){
+        $test = Carbon::today();
+        $result = DrawMaster::whereDoesnthave('result_masters', function($q) use ($test) {
+            $q->where('game_date', '=', $test);
+        })
+            ->whereGameId($id)
+            ->get();
         return response()->json(['success'=>1,'data'=>DrawMasterResource::collection($result)], 200,[],JSON_NUMERIC_CHECK);
     }
 
