@@ -210,7 +210,7 @@ class ResultMasterController extends Controller
                 if(!empty($manualResult)){
                     $number_combination_for_result = $manualResult->number_combination_id;
                     $gameId = $manualResult->game_id;
-                }else{
+                }else if ($game_id!=1){
                     $selectRandomResult = NumberCombination::all()->random(1)->first();
                     $number_combination_for_result = $selectRandomResult->id;
 

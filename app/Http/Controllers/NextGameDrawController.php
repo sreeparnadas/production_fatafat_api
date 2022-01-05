@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\NextGameDraw;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class NextGameDrawController extends Controller
 {
@@ -16,6 +17,8 @@ class NextGameDrawController extends Controller
     public function getNextDrawIdOnly(){
         $nextGameDrawObj = NextGameDraw::first();
         $result['id'] = $nextGameDrawObj->next_draw_id;
-        return response()->json(['success'=> 1, 'data' => $result], 200);
+//        $nextGameDrawObj = NextGameDraw::select(DB::raw('next_draw_id as id'), 'game_id')->get();
+////        $result['id'] = $nextGameDrawObj->next_draw_id;
+        return response()->json(['success'=> 1, 'data' => $nextGameDrawObj], 200);
     }
 }
