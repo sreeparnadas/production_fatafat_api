@@ -78,6 +78,16 @@ class CentralController extends Controller
 
     }
 
+    public function update_is_draw_over(){
+        $data = DrawMaster::whereIsDrawOver('yes')->get();
+        foreach($data as $x){
+            $y = DrawMaster::find($x->id);
+            $y->is_draw_over = 'no';
+            $y->update();
+        }
+        return response()->json(['success'=>1, 'message' => $data], 200);
+    }
+
 
 //    public function createResult(){
 //

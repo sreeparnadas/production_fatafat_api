@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\ManualResultResource;
+use App\Models\DrawMaster;
 use App\Models\ManualResult;
 use App\Models\ResultMaster;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -38,8 +41,8 @@ class ManualResultController extends Controller
         }
         $requestedData = (object)$request->json()->all();
 
-        DB::beginTransaction();
-        try{
+        $drawMasterTemp = DrawMaster::whereGameId($requestedData->gameId)->whereId($requestedData->drawMasterId)->first();
+        if ($drawMasterTemp->is_draw_over === 'yes'){
 
             $manualResult = new ManualResult();
             $manualResult->draw_master_id = $requestedData->drawMasterId;
@@ -48,13 +51,43 @@ class ManualResultController extends Controller
             $manualResult->game_date = Carbon::today();
             $manualResult->save();
 
-            DB::commit();
-        }catch (\Exception $e){
-            DB::rollBack();
-            return response()->json(['success'=>0, 'data' => null, 'error'=>$e->getMessage()], 500);
+            $resultMaster = new ResultMaster();
+            $resultMaster->draw_master_id = $requestedData->drawMasterId;
+            $resultMaster->number_combination_id = $requestedData->numberCombinationId;
+            $resultMaster->game_id = $requestedData->gameId;
+            $resultMaster->game_date = Carbon::today();
+            $resultMaster->save();
+
+            return response()->json(['success'=>1,'data'=> new ManualResultResource($manualResult)], 200,[],JSON_NUMERIC_CHECK);
+        }else{
+
+            $manualResult = new ManualResult();
+            $manualResult->draw_master_id = $requestedData->drawMasterId;
+            $manualResult->number_combination_id = $requestedData->numberCombinationId;
+            $manualResult->game_id = $requestedData->gameId;
+            $manualResult->game_date = Carbon::today();
+            $manualResult->save();
+
+            return response()->json(['success'=>1,'data'=> new ManualResultResource($manualResult)], 200,[],JSON_NUMERIC_CHECK);
         }
 
-        return response()->json(['success'=>1,'data'=> new ManualResultResource($manualResult)], 200,[],JSON_NUMERIC_CHECK);
+//        DB::beginTransaction();
+//        try{
+//
+//            $manualResult = new ManualResult();
+//            $manualResult->draw_master_id = $requestedData->drawMasterId;
+//            $manualResult->number_combination_id = $requestedData->numberCombinationId;
+//            $manualResult->game_id = $requestedData->gameId;
+//            $manualResult->game_date = Carbon::today();
+//            $manualResult->save();
+//
+//            DB::commit();
+//        }catch (\Exception $e){
+//            DB::rollBack();
+//            return response()->json(['success'=>0, 'data' => null, 'error'=>$e->getMessage()], 500);
+//        }
+//
+//        return response()->json(['success'=>1,'data'=> new ManualResultResource($manualResult)], 200,[],JSON_NUMERIC_CHECK);
     }
 
     /**

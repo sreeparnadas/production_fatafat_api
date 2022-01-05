@@ -257,6 +257,7 @@ class ResultMasterController extends Controller
         }
     }
 
+
     public function get_last_result(){
         $result_date= Carbon::today();
 
