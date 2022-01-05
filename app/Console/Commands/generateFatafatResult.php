@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Http\Controllers\CentralController;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 
 class generateFatafatResult extends Command
 {
@@ -38,6 +39,8 @@ class generateFatafatResult extends Command
      */
     public function handle()
     {
+        LOG::info('Fatafat');
+        LOG::info(Carbon::today());
         $centralControllerObj = new CentralController();
         $centralControllerObj->createResult(1);
     }
