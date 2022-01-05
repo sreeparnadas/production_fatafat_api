@@ -25,7 +25,7 @@ class CentralController extends Controller
             $tempDrawMaster = new DrawMaster();
             $tempDrawMasterLastDraw = DrawMaster::whereId($lastDrawId)->whereGameId($id)->first();
             $tempDrawMasterLastDraw->active = 0;
-            $tempDrawMasterLastDraw->draw_over = 'yes';
+            $tempDrawMasterLastDraw->is_draw_over = 'yes';
             $tempDrawMasterLastDraw->update();
 
             $tempDrawMasterNextDraw = DrawMaster::whereId($nextDrawId)->whereGameId($id)->first();
