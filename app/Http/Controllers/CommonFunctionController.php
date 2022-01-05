@@ -24,4 +24,5 @@ class CommonFunctionController extends Controller
         $replaced = Str::replaceLast('\\r\\n', '\r\n', $replaced);
         return response()->json(['success'=>1, 'data' => $replaced], 200);
     }
+    
 }
