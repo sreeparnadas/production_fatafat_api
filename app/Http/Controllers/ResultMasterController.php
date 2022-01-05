@@ -216,6 +216,8 @@ class ResultMasterController extends Controller
 
 //                    $selectRandomGame = Game::all()->random(1)->first();
                     $gameId = $game_id;
+                }else{
+                    return response()->json(['success'=>1, 'data' => 'added result'], 200);
                 }
                 $resultMaster = new ResultMaster();
                 $resultMaster->draw_master_id = $draw_id;

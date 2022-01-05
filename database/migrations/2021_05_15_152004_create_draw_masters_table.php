@@ -21,6 +21,7 @@ class CreateDrawMastersTable extends Migration
             $table->string('visible_time',20)->nullable(true);
             $table ->foreignId('game_id')->references('id')->on('games')->onDelete('cascade');
             $table->tinyInteger('active')->default(0);
+            $table->enum('draw_over',['yes','no'])->default('no');
             $table->timestamps();
         });
     }
