@@ -120,6 +120,10 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     Route::post('getResultByDate', [ResultMasterController::class, 'get_result_by_date']);
 
     Route::get('getGame', [GameController::class, 'getGame']);
+
+
+    Route::get('updateAutoGenerate/{id}', [GameController::class, 'update_auto_generate']);
+
 });
 
 
@@ -218,6 +222,8 @@ Route::group(array('prefix' => 'dev'), function() {
     Route::put('cPanel/game/payout',[GameTypeController::class, 'update_payout']);
 
     Route::get('getGame', [GameController::class, 'getGame']);
+
+    Route::get('updateAutoGenerate/{id}', [GameController::class, 'update_auto_generate']);
 
 
 });

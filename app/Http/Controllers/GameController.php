@@ -20,9 +20,14 @@ class GameController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function update_auto_generate($id)
     {
-        //
+        $game= Game::find($id);
+        $game->auto_generate= $game->auto_generate=='yes'?'no':'yes';
+        $game->update();
+        // $test= $game->auto_generate=='yes'?'no':'yes';
+        return response()->json(['success'=>1,'data'=> $game], 200,[],JSON_NUMERIC_CHECK);
+
     }
 
     /**
