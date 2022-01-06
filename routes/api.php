@@ -123,6 +123,7 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
 
 
     Route::get('updateAutoGenerate/{id}', [GameController::class, 'update_auto_generate']);
+    Route::get('activateGame/{id}', [GameController::class, 'activate_game']);
 
 });
 
@@ -130,6 +131,8 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
 
 
 Route::group(array('prefix' => 'dev'), function() {
+
+    Route::get('activateGame/{id}', [GameController::class, 'activate_game']);
 
     Route::post('terminal/updateCancellation/{id}', [TerminalReportController::class, 'updateCancellationGameWise']);
     Route::post('updateDrawOver', [CentralController::class, 'update_is_draw_over']);

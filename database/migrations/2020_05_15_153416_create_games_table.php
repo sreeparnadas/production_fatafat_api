@@ -17,6 +17,7 @@ class CreateGamesTable extends Migration
             $table->id();
             $table->string('game_name');
             $table->enum('auto_generate',['yes','no'])->default('no');
+            $table->enum('active',['yes','no'])->default('yes');
 
             $table->tinyInteger('inforce')->default(1);
             $table->timestamps();
