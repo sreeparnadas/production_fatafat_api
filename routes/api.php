@@ -67,6 +67,8 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
 
     //draw_masters
     Route::get('drawTimes',[DrawMasterController::class,'index']);
+    Route::get('drawTimes/{id}',[DrawMasterController::class,'get_draw_time_by_game_id']);
+
     Route::get('drawTimes/dates/{date}',[DrawMasterController::class,'get_incomplete_games_by_date']);
 
     //game_types
@@ -161,6 +163,7 @@ Route::group(array('prefix' => 'dev'), function() {
 
     //draw_masters
     Route::get('drawTimes',[DrawMasterController::class,'index']);
+    Route::get('drawTimes/{id}',[DrawMasterController::class,'get_draw_time_by_game_id']);
     Route::get('drawTimes/active',[DrawMasterController::class,'getActiveDraw']);
     Route::get('drawTimes/active/{id}',[DrawMasterController::class,'getGameActiveDraw']);
     Route::get('drawTimes/dates/{id}',[DrawMasterController::class,'get_incomplete_games_by_date']);

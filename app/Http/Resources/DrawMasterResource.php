@@ -28,6 +28,7 @@ class DrawMasterResource extends JsonResource
             'startTime' => $this->start_time,
             'endTime' => $this->end_time,
             'visibleTime' => $this->visible_time,
+            'gameId' => $this->game_id,
             'active' => $this->active
         ];
     }

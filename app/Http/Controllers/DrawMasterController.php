@@ -17,6 +17,13 @@ class DrawMasterController extends Controller
         return response()->json(['success'=>1,'data'=>DrawMasterResource::collection($result)], 200,[],JSON_NUMERIC_CHECK);
     }
 
+
+    public function get_draw_time_by_game_id($id)
+    {
+        $result = DrawMaster::whereGameId($id)->get();
+        return response()->json(['success'=>1,'data'=>DrawMasterResource::collection($result)], 200,[],JSON_NUMERIC_CHECK);
+    }
+
     public function get_incomplete_games_by_date($id){
         $test = Carbon::today();
         $result = DrawMaster::whereDoesnthave('result_masters', function($q) use ($test) {
