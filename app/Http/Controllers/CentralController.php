@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Game;
 use App\Models\NumberCombination;
 use App\Models\PlayMaster;
 use Illuminate\Http\Request;
@@ -15,6 +16,11 @@ class CentralController extends Controller
 {
 
     public function createResult($id){
+
+        $game = Game::whereId($id)->first();
+        if($game->active === 'no'){
+            return response()->json(['success'=>0, 'message' => 'game not active'], 401);
+        }
 
         $nextGameDrawObj = NextGameDraw::whereGameId($id)->first();
         $nextDrawId = $nextGameDrawObj->next_draw_id;
