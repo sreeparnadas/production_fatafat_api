@@ -29,9 +29,10 @@ class DrawMasterController extends Controller
         $test = Carbon::today();
         $result = DrawMaster::whereDoesnthave('result_masters', function($q) use ($test) {
             $q->where('game_date', '=', $test);
-        })->whereDoesnthave('manual_results', function($q) use ($test) {
-            $q->where(DB::raw('date(created_at)'), '=', $test);
         })
+//            ->whereDoesnthave('manual_results', function($q) use ($test) {
+//            $q->where(DB::raw('date(created_at)'), '=', $test);
+//        })
             ->whereGameId($id)
             ->get();
         return response()->json(['success'=>1,'data'=>DrawMasterResource::collection($result)], 200,[],JSON_NUMERIC_CHECK);
