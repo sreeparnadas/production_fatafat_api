@@ -7,6 +7,7 @@ use App\Models\DrawMaster;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\DB;
 
 class DrawMasterController extends Controller
 {
@@ -28,6 +29,8 @@ class DrawMasterController extends Controller
         $test = Carbon::today();
         $result = DrawMaster::whereDoesnthave('result_masters', function($q) use ($test) {
             $q->where('game_date', '=', $test);
+        })->whereDoesnthave('manual_results', function($q) use ($test) {
+            $q->where(DB::raw('date(created_at)'), '=', $test);
         })
             ->whereGameId($id)
             ->get();
