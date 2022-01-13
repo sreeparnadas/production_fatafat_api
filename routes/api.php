@@ -77,6 +77,7 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     //manual_result
 
     Route::post('manualResult',[ManualResultController::class, 'save_manual_result']);
+    Route::post('insertOldResultByDate',[ManualResultController::class, 'insert_old_result_by_date']);
 
     //play_masters
     Route::post('buyTicket',[PlayController::class,'save_play_details']);
@@ -186,7 +187,9 @@ Route::group(array('prefix' => 'dev'), function() {
 
     //manual_result
 
-    // Route::post('manualResult',[ManualResultController::class, 'save_manual_result']);
+    Route::post('manualResult',[ManualResultController::class, 'save_manual_result']);
+    Route::post('insertOldResultByDate',[ManualResultController::class, 'insert_old_result_by_date']);
+
 
 
     //test

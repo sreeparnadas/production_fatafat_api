@@ -23,22 +23,7 @@ class ManualResultController extends Controller
 
     public function save_manual_result(Request $request)
     {
-//        $rules = array(
-//            'drawMasterId'=>['required','exists:draw_masters,id',
-//                    function($attribute, $value, $fail){
-//                        $existingManual=ManualResult::where('draw_master_id', $value)->where('game_date','=',Carbon::today())->first();
-//                        if($existingManual){
-//                            $fail($value.' Duplicate entry');
-//                        }
-//                    }
-//                ],
-//            'numberCombinationId'=>'required|exists:number_combinations,id',
-//        );
-//        $validator = Validator::make($request->all(),$rules);
 //
-//        if($validator->fails()){
-//            return response()->json(['success'=>0,'data'=>null,'error'=>$validator->messages()], 406,[],JSON_NUMERIC_CHECK);
-//        }
         $requestedData = (object)$request->json()->all();
 
         $drawMasterTemp = DrawMaster::whereGameId($requestedData->gameId)->whereId($requestedData->drawMasterId)->first();
@@ -98,6 +83,31 @@ class ManualResultController extends Controller
 //        }
 //
 //        return response()->json(['success'=>1,'data'=> new ManualResultResource($manualResult)], 200,[],JSON_NUMERIC_CHECK);
+    }
+
+
+
+
+
+    public function insert_old_result_by_date(Request $request)
+    {
+        $requestedData = (object)$request->json()->all();
+
+
+            $manualResult = ManualResult::whereGameId($requestedData->gameId)->whereGameDate($requestedData->gameDate)->first();
+
+            if(empty($manualResult)){
+                $manualResult = new ManualResult();
+                $manualResult->draw_master_id = $requestedData->drawMasterId;
+                $manualResult->number_combination_id = $requestedData->numberCombinationId;
+                $manualResult->game_id = $requestedData->gameId;
+                $manualResult->game_date = $requestedData->gameDate;
+                $manualResult->save();
+            }
+
+            return response()->json(['success'=>1,'data'=> new ManualResultResource($manualResult)], 200,[],JSON_NUMERIC_CHECK);
+
+//
     }
 
     /**
