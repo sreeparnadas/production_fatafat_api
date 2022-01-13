@@ -108,7 +108,6 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     Route::post('terminal/barcodeReport',[TerminalReportController::class, 'barcode_wise_report_by_terminal']);
     Route::post('terminal/terminal_sale_reports', [TerminalReportController::class, 'terminal_sale_reports']);
 
-    Route::post('cPanel/barcodeReportByDate', [CPanelReportController::class, 'barcode_wise_report_by_date']);
     Route::post('stockist/customerSaleReports', [StockistController::class, 'customer_sale_reports']);
     Route::post('stockist/barcodeReportByDate', [StockistController::class, 'barcode_wise_report_by_date']);
 
@@ -173,7 +172,7 @@ Route::group(array('prefix' => 'dev'), function() {
     // Route::get('gameTypes',[GameTypeController::class,'index']);
 
     //play_masters
-    // Route::post('buyTicket',[PlayController::class,'save_play_details']);
+    Route::post('buyTicket',[PlayController::class,'save_play_details']);
 
     //game
     // Route::get('playDetails/playId/{id}',[PlayMasterController::class,'get_play_details_by_play_master_id']);
