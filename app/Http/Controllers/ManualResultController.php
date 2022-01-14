@@ -103,6 +103,14 @@ class ManualResultController extends Controller
                 $manualResult->game_id = $requestedData->gameId;
                 $manualResult->game_date = $requestedData->gameDate;
                 $manualResult->save();
+
+                $resultMaster = new ResultMaster();
+                $resultMaster->draw_master_id = $requestedData->drawMasterId;
+                $resultMaster->number_combination_id = $requestedData->numberCombinationId;
+                $resultMaster->game_id = $requestedData->gameId;
+//                $resultMaster->game_date = Carbon::today();
+                $resultMaster->game_date = $requestedData->gameDate;
+                $resultMaster->save();
             }
 
             return response()->json(['success'=>1,'data'=> new ManualResultResource($manualResult)], 200,[],JSON_NUMERIC_CHECK);
