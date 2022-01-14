@@ -94,7 +94,7 @@ class ManualResultController extends Controller
         $requestedData = (object)$request->json()->all();
 
 
-            $manualResult = ManualResult::whereGameId($requestedData->gameId)->whereGameDate($requestedData->gameDate)->first();
+            $manualResult = ManualResult::whereGameId($requestedData->gameId)->whereGameDate($requestedData->gameDate)->whereDrawMasterId($requestedData->drawMasterId)->first();
 
             if(empty($manualResult)){
                 $manualResult = new ManualResult();
