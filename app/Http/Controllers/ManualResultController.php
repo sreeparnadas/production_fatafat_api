@@ -66,23 +66,7 @@ class ManualResultController extends Controller
             return response()->json(['success'=>1,'data'=> new ManualResultResource($manualResult)], 200,[],JSON_NUMERIC_CHECK);
         }
 
-//        DB::beginTransaction();
-//        try{
-//
-//            $manualResult = new ManualResult();
-//            $manualResult->draw_master_id = $requestedData->drawMasterId;
-//            $manualResult->number_combination_id = $requestedData->numberCombinationId;
-//            $manualResult->game_id = $requestedData->gameId;
-//            $manualResult->game_date = Carbon::today();
-//            $manualResult->save();
-//
-//            DB::commit();
-//        }catch (\Exception $e){
-//            DB::rollBack();
-//            return response()->json(['success'=>0, 'data' => null, 'error'=>$e->getMessage()], 500);
-//        }
-//
-//        return response()->json(['success'=>1,'data'=> new ManualResultResource($manualResult)], 200,[],JSON_NUMERIC_CHECK);
+
     }
 
 

@@ -168,6 +168,7 @@ Route::group(array('prefix' => 'dev'), function() {
     Route::get('drawTimes/active',[DrawMasterController::class,'getActiveDraw']);
     Route::get('drawTimes/active/{id}',[DrawMasterController::class,'getGameActiveDraw']);
     Route::get('drawTimes/dates/{id}',[DrawMasterController::class,'get_incomplete_games_by_date']);
+    Route::post('drawTimesByDate',[DrawMasterController::class,'get_draws_by_game_id_and_date']);
 
     //game_types
     // Route::get('gameTypes',[GameTypeController::class,'index']);

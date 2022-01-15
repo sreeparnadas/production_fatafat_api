@@ -39,6 +39,22 @@ class DrawMasterController extends Controller
         return response()->json(['success'=>1,'data'=>DrawMasterResource::collection($result)], 200,[],JSON_NUMERIC_CHECK);
     }
 
+
+    public function get_draws_by_game_id_and_date(Request $request){
+        $requestedData = (object)$request->json()->all();
+
+
+        $gameDate = $requestedData->gameDate;
+        $gameId= $requestedData->gameId;
+
+        $data = DB::select("select * from draw_masters
+        where id not in (select draw_master_id from result_masters where game_date='$gameDate' and game_id=$gameId)
+        and game_id=$gameId");
+        
+        return response()->json(['success'=>1,'data'=>DrawMasterResource::collection($data)], 200,[],JSON_NUMERIC_CHECK);
+
+    }
+
     public function getActiveDraw()
     {
         $result = DrawMaster::where('active',1)->first();
