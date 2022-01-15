@@ -68,6 +68,8 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     //draw_masters
     Route::get('drawTimes',[DrawMasterController::class,'index']);
     Route::get('drawTimes/{id}',[DrawMasterController::class,'get_draw_time_by_game_id']);
+    Route::post('drawTimesByDate',[DrawMasterController::class,'get_draws_by_game_id_and_date']);
+
 
     Route::get('drawTimes/dates/{date}',[DrawMasterController::class,'get_incomplete_games_by_date']);
 
