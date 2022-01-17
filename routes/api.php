@@ -80,6 +80,8 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
 
     Route::post('manualResult',[ManualResultController::class, 'save_manual_result']);
     Route::post('insertOldResultByDate',[ManualResultController::class, 'insert_old_result_by_date']);
+    Route::post("manualResult/inputLoadByGameId",[ManualResultController::class,'getInputLoadByGameId']);
+
 
     //play_masters
     Route::post('buyTicket',[PlayController::class,'save_play_details']);
@@ -162,7 +164,7 @@ Route::group(array('prefix' => 'dev'), function() {
     // Route::get("numberCombinations",[NumberCombinationController::class,'index']);
     // Route::get("numberCombinations/number/{number}",[NumberCombinationController::class,'getNumbersBySingleNumber']);
      Route::get("numberCombinations/matrix",[NumberCombinationController::class,'getAllInMatrix']);
-     Route::post("numberCombinations/reportTest",[NumberCombinationController::class,'reportTest']);
+    //  Route::post("numberCombinations/inputLoadByGameId",[NumberCombinationController::class,'getInputLoadByGameId']);
 
     //draw_masters
     Route::get('drawTimes',[DrawMasterController::class,'index']);
@@ -192,6 +194,8 @@ Route::group(array('prefix' => 'dev'), function() {
 
     Route::post('manualResult',[ManualResultController::class, 'save_manual_result']);
     Route::post('insertOldResultByDate',[ManualResultController::class, 'insert_old_result_by_date']);
+    Route::post("manualResult/inputLoadByGameId",[ManualResultController::class,'getInputLoadByGameId']);
+
 
 
 
