@@ -39,16 +39,25 @@ class NumberCombinationController extends Controller
         $retArray = [];
         $singleNumbers = SingleNumber::get();
         foreach ($singleNumbers as $x){
+            $temp = DB::select("select max(play_details.quantity) as quanitty from play_masters
+                    inner join play_details on play_details.play_master_id = play_masters.id
+                    inner join number_combinations ON number_combinations.id = play_details.number_combination_id
+                    where play_masters.draw_master_id = 1 and play_masters.game_id = 1 and play_details.game_type_id = 1 and number_combinations.single_number_id = ".$x->id."
+                    group by play_details.number_combination_id
+                    limit 1");
+            if(!empty($temp)){
+                $temp = $temp[0]->quanitty;
+            }else{
+                $temp = 0;
+            }
+
            $y = array(
                'singleNumber'=>$x->id,
-
-//               'quantity'=> DB::select("select ifnull(max(play_details.quantity),0) as quantity from play_masters
-//                    inner join play_details on play_details.play_master_id = play_masters.id
-//                    where play_masters.draw_master_id =  ".$draw_id."  and play_masters.game_id = ".$game_id." and play_details.game_type_id = 1")[0]->quantity,
+               'quantity'=> $temp,
 
                'numberCombinations'=> DB::select("select number_combinations.id as number_combination ,number_combinations.visible_triple_number ,ifnull(table1.quantity,0) as quantity from (select play_details.number_combination_id, sum(play_details.quantity) as quantity from play_masters
                     inner join play_details on play_details.play_master_id = play_masters.id
-                    where play_masters.draw_master_id = ".$draw_id." and play_masters.game_id = ".$game_id."
+                    where play_masters.draw_master_id = ".$draw_id." and play_masters.game_id = ".$game_id." and play_details.game_type_id = 2
                     group by play_details.number_combination_id) as table1
                     right outer join number_combinations on table1.number_combination_id = number_combinations.id
                     where number_combinations.single_number_id = ".$x->id."
