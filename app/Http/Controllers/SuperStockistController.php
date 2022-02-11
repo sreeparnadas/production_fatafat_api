@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\StockistResource;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -9,6 +10,15 @@ use Illuminate\Support\Facades\DB;
 
 class SuperStockistController extends Controller
 {
+
+    public function get_all_super_stockist(){
+
+        $data = User::whereUserTypeId(5)->get();
+
+        return response()->json(['success'=>1, 'data' => StockistResource::collection($data)], 200);
+//        return response()->json(['success'=>1, 'data' => $data], 200);
+    }
+
     public function create_super_stockist(Request $request){
         $requestedData = (object)$request->json()->all();
 
@@ -21,6 +31,6 @@ class SuperStockistController extends Controller
         $user->closing_balance = 0;
         $user->save();
 
-        return response()->json(['success'=>1, 'message' => $user], 200);
+        return response()->json(['success'=>1, 'data' => $user], 200);
     }
 }

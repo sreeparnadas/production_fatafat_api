@@ -15,6 +15,7 @@ class StockistResource extends JsonResource
     public function toArray($request)
     {
         return [
+
             'userId' => $this->id,
             'userName' => $this->user_name,
             'pin' => $this->email,
