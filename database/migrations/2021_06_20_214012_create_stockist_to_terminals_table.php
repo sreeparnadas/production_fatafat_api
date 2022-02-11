@@ -16,9 +16,16 @@ class CreateStockistToTerminalsTable extends Migration
         Schema::create('stockist_to_terminals', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('stockist_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreignId('terminal_id')->references('id')->on('users')->onDelete('cascade');
-            $table->unique(['stockist_id', 'terminal_id']);
+            $table->foreignId('super_stockist_id')->references('id')->on('users')->onDelete('cascade');
+
+            $table->integer('stockist_id');
+            $table->integer('terminal_id');
+
+//            $table->unique(['stockist_id', 'terminal_id']);
+
+//            $table->foreignId('stockist_id')->references('id')->on('users')->onDelete('cascade');
+//            $table->foreignId('terminal_id')->references('id')->on('users')->onDelete('cascade');
+//            $table->unique(['stockist_id', 'terminal_id']);
 
             $table->tinyInteger('inforce')->default(1);
             $table->timestamps();

@@ -21,6 +21,7 @@ use App\Http\Controllers\TerminalController;
 use App\Http\Controllers\CPanelReportController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\TerminalReportController;
+use App\Http\Controllers\SuperStockistController;
 
 /*
 |--------------------------------------------------------------------------
@@ -131,6 +132,8 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     Route::get('updateAutoGenerate/{id}', [GameController::class, 'update_auto_generate']);
     Route::get('activateGame/{id}', [GameController::class, 'activate_game']);
 
+    Route::post('createSuperStockist', [SuperStockistController::class, 'create_super_stockist']);
+
 });
 
 
@@ -148,6 +151,7 @@ Route::group(array('prefix' => 'dev'), function() {
     // Route::get('getGame', [GameController::class, 'getGame']);
 
     Route::post('getResultByDate', [ResultMasterController::class, 'get_result_by_date']);
+    Route::post('createSuperStockist', [SuperStockistController::class, 'create_super_stockist']);
 
     Route::post('cPanel/barcodeReportByDate', [CPanelReportController::class, 'barcode_wise_report_by_date']);
     // Route::post('stockist/customerSaleReports', [StockistController::class, 'customer_sale_reports']);
