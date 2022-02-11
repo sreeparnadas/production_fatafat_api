@@ -18,8 +18,8 @@ class CreateStockistToTerminalsTable extends Migration
 
             $table->foreignId('super_stockist_id')->references('id')->on('users')->onDelete('cascade');
 
-            $table->integer('stockist_id');
-            $table->integer('terminal_id');
+            $table->integer('stockist_id')->nullable(true);
+            $table->integer('terminal_id')->nullable(true);
 
 //            $table->unique(['stockist_id', 'terminal_id']);
 

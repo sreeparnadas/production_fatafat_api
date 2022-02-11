@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\StockistResource;
+use App\Models\StockistToTerminal;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -30,6 +31,12 @@ class SuperStockistController extends Controller
         $user->opening_balance = 0;
         $user->closing_balance = 0;
         $user->save();
+
+        if ($user){
+            $stockistToTerminal = new StockistToTerminal();
+            $stockistToTerminal->super_stockist_id = $user->id;
+            $stockistToTerminal->save();
+        }
 
         return response()->json(['success'=>1, 'data' => $user], 200);
     }
