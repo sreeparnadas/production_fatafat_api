@@ -40,4 +40,14 @@ class SuperStockistController extends Controller
 
         return response()->json(['success'=>1, 'data' => $user], 200);
     }
+
+    public function update_super_stockist(Request $request){
+        $requestedData = (object)$request->json()->all();
+
+        $user = User::find($requestedData->id);
+        $user->user_name = $requestedData->userName;
+        $user->save();
+
+        return response()->json(['success'=>1, 'data' => $user], 200);
+    }
 }

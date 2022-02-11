@@ -134,6 +134,7 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
 
     Route::get('getSuperStockist', [SuperStockistController::class, 'get_all_super_stockist']);
     Route::post('createSuperStockist', [SuperStockistController::class, 'create_super_stockist']);
+    Route::put('superStockist', [SuperStockistController::class, 'update_super_stockist']);
 
 });
 
@@ -143,6 +144,7 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
 Route::group(array('prefix' => 'dev'), function() {
 
     Route::get('getSuperStockist', [SuperStockistController::class, 'get_all_super_stockist']);
+    Route::put('superStockist', [SuperStockistController::class, 'update_super_stockist']);
 
     Route::get('activateGame/{id}', [GameController::class, 'activate_game']);
 
