@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\StockistResource;
 use App\Models\PlayMaster;
 use App\Models\RechargeToUser;
+use App\Models\StockistToTerminal;
 use App\Models\User;
 use App\Models\UserType;
 use App\Models\CustomVoucher;
@@ -150,8 +151,21 @@ class StockistController extends Controller
             $user->user_type_id = 3;
             $user->opening_balance = 0;
             $user->closing_balance = 0;
-
             $user->save();
+
+            if($user){
+                $stockistToTerminal = StockistToTerminal::whereStockistId(null)->whereSuperStockistId($requestedData->superStockistId)->first();
+                if($stockistToTerminal){
+                    $stockistToTerminal->stockist_id = $user->id;
+                    $stockistToTerminal->save();
+                }else{
+                    $stockistToTerminal = new StockistToTerminal();
+                    $stockistToTerminal->super_stockist_id = $requestedData->superStockistId;
+                    $stockistToTerminal->stockist_id = $user->id;
+                    $stockistToTerminal->save();
+                }
+            }
+
             DB::commit();
         }catch(\Exception $e){
             DB::rollBack();
