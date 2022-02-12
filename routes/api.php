@@ -248,7 +248,7 @@ Route::group(array('prefix' => 'dev'), function() {
 
     Route::get('getGame', [GameController::class, 'getGame']);
 
-    // Route::get('updateAutoGenerate/{id}', [GameController::class, 'update_auto_generate']);
+     Route::get('updateAutoGenerate/{id}', [GameController::class, 'update_auto_generate']);
 
 
 });
