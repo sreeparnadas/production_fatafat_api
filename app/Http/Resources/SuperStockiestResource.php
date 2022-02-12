@@ -4,14 +4,9 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class StockistResource extends JsonResource
+class SuperStockiestResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
-     */
+
     public function toArray($request)
     {
         return [
@@ -19,8 +14,6 @@ class StockistResource extends JsonResource
             'userId' => $this->id,
             'userName' => $this->user_name,
             'pin' => $this->email,
-//            'userTypeId' => ($this->user_type)->id,
-            'superStockiestId' => $this->super_stockist_id,
             'userTypeId' => $this->user_type_id,
             'balance' => $this->closing_balance,
 

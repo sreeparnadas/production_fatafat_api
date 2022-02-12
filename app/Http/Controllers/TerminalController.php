@@ -6,6 +6,7 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Models\RechargeToUser;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use App\Models\CustomVoucher;
 
@@ -66,11 +67,24 @@ class TerminalController extends Controller
             $user->closing_balance = 0;
 
             $user->save();
-            $stockistToTerminal= new StockistToTerminal();
 
-            $stockistToTerminal->terminal_id = $user->id;
-            $stockistToTerminal->stockist_id = $requestedData->stockistId;
-            $stockistToTerminal->save();
+            if($user){
+                $stockistToTerminal = StockistToTerminal::whereStockistId($requestedData->stockistId)
+                    ->whereSuperStockistId($requestedData->superStockistId)
+                    ->whereTerminalId(null)
+                    ->first();
+                if($stockistToTerminal) {
+                    $stockistToTerminal->terminal_id = $user->id;
+                    $stockistToTerminal->save();
+                }else{
+                    $stockistToTerminal= new StockistToTerminal();
+                    $stockistToTerminal->super_stockist_id = $requestedData->superStockistId;
+                    $stockistToTerminal->stockist_id = $requestedData->stockistId;
+                    $stockistToTerminal->terminal_id = $user->id;
+                    $stockistToTerminal->save();
+                }
+            }
+
 
 
             DB::commit();

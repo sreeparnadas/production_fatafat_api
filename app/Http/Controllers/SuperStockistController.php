@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\StockistResource;
+use App\Http\Resources\SuperStockiestResource;
 use App\Models\StockistToTerminal;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
@@ -16,7 +17,7 @@ class SuperStockistController extends Controller
 
         $data = User::whereUserTypeId(5)->get();
 
-        return response()->json(['success'=>1, 'data' => StockistResource::collection($data)], 200);
+        return response()->json(['success'=>1, 'data' => SuperStockiestResource::collection($data)], 200);
 //        return response()->json(['success'=>1, 'data' => $data], 200);
     }
 
