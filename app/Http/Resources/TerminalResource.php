@@ -31,6 +31,7 @@ class TerminalResource extends JsonResource
             // 'stockist' =>($this->stockist_id!= null) ? new StockistResource($this->stockist_id) : null,
             'stockist' => is_null($this->stockist_id) ? 'empty':new UserResource(User::find($this->stockist_id)),
             'stockistId' => $this->stockist_id,
+            'commission' => $this->commission,
 
         ];
     }

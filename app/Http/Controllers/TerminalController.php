@@ -62,6 +62,7 @@ class TerminalController extends Controller
             $user->user_name = $requestedData->terminalName;
             $user->email = $user_id;
             $user->password = md5($user_id);
+            $user->commission = $requestedData->commission;
             $user->user_type_id = 4;
             $user->opening_balance = 0;
             $user->closing_balance = 0;
