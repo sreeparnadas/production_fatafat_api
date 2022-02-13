@@ -100,9 +100,6 @@ class TerminalController extends Controller
 
     public function update_terminal(Request $request){
 
-
-
-
         $requestedData = (object)$request->json()->all();
 
         $terminalId = $requestedData->terminalId;
@@ -111,6 +108,7 @@ class TerminalController extends Controller
 
         $terminal = User::findOrFail($terminalId);
         $terminal->user_name = $terminalName;
+        $terminal->commission = $requestedData->commission;
         $terminal->save();
 
         $stockistToTerminal = StockistToTerminal::where('terminal_id',$terminalId)->first();

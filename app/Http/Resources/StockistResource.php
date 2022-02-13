@@ -23,6 +23,7 @@ class StockistResource extends JsonResource
             'superStockiestId' => $this->super_stockist_id,
             'userTypeId' => $this->user_type_id,
             'balance' => $this->closing_balance,
+            'commission' => $this->commission,
 
         ];
     }

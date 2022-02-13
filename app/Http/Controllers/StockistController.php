@@ -102,7 +102,7 @@ class StockistController extends Controller
     public function get_all_stockists(){
 
 //        $stockists = UserType::find(3)->users;
-        $stockists = User::select(DB::raw("users.id, users.user_name, users.email, users.password, users.user_type_id, users.mobile1, stockist_to_terminals.super_stockist_id , users.closing_balance, users.opening_balance, stockist_to_terminals.stockist_id"))
+        $stockists = User::select(DB::raw("users.id, users.user_name, users.commission, users.email, users.password, users.user_type_id, users.mobile1, stockist_to_terminals.super_stockist_id , users.closing_balance, users.opening_balance, stockist_to_terminals.stockist_id"))
             ->join('user_types','user_types.id','users.user_type_id')
             ->leftJoin('stockist_to_terminals','users.id','stockist_to_terminals.stockist_id')
             ->where('user_type_id',3)
@@ -189,7 +189,16 @@ class StockistController extends Controller
         $user_name = $requestedData->userName;
         $stockist = User::findOrFail($id);
         $stockist->user_name = $user_name;
+        $stockist->commission = $requestedData->commission;
         $stockist->save();
+
+        $stockistToTerminal = StockistToTerminal::whereStockistId($requestedData->id)->get();
+        foreach ($stockistToTerminal as $a){
+            $x = StockistToTerminal::find($a->id);
+            $x->super_stockist_id = $requestedData->superStockistId;
+            $x->save();
+        }
+
         return response()->json(['success'=>1,'data'=> new StockistResource($stockist)], 200,[],JSON_NUMERIC_CHECK);
         // return response()->json(['success'=>1,'data'=>$id], 200,[],JSON_NUMERIC_CHECK);
 
