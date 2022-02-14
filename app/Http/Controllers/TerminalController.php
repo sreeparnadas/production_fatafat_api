@@ -122,10 +122,19 @@ class TerminalController extends Controller
             $stockistToTerminal->save();
         }
 
-
-        return response()->json(['success'=>1,'data'=> new TerminalResource($terminal)], 200,[],JSON_NUMERIC_CHECK);
+        return response()->json(['success'=>1,'data'=> new TerminalResource($terminal), 'test1'=> $stockistToTerminal], 200,[],JSON_NUMERIC_CHECK);
         // return response()->json(['data'=> $stockistToTerminal]);
     }
+
+    public function terminal_by_super_stockist($id){
+        $data = StockistToTerminal::select(DB::raw("stockist_to_terminals.super_stockist_id,stockist_to_terminals.stockist_id ,users.id, users.user_name,users.email, users.user_type_id,users.closing_balance, users.commission, users.user_type_id"))
+            ->join('users','users.id','stockist_to_terminals.terminal_id')
+            ->where('stockist_to_terminals.super_stockist_id',$id)
+            ->get();
+        return response()->json(['success'=> 1, 'data' => TerminalResource::collection($data)], 200);
+    }
+
+
 
     public function update_balance_to_terminal(Request $request){
         $requestedData = (object)$request->json()->all();

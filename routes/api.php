@@ -94,6 +94,7 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
 
 
     Route::get('stockists',[StockistController::class, 'get_all_stockists']);
+    Route::get('stockistsBySuperStockist/{id}',[StockistController::class, 'get_stockist_by_super_stockist']);
     Route::get('stockists/{id}',[StockistController::class, 'get_stockist']);
     Route::post('stockists',[StockistController::class, 'create_stockist']);
     Route::put('stockists',[StockistController::class, 'update_stockist']);
@@ -119,6 +120,7 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
 
     Route::post('terminal/updateCancellation', [TerminalReportController::class, 'updateCancellation']);
     Route::post('terminal/updateCancellation/{id}', [TerminalReportController::class, 'updateCancellationGameWise']);
+    Route::get('terminalBySuperStockist/{id}',[TerminalController::class, 'terminal_by_super_stockist']);
 
 
     Route::put('terminal/resetPassword', [TerminalController::class, 'reset_terminal_password']);
@@ -157,6 +159,7 @@ Route::group(array('prefix' => 'dev'), function() {
 
     Route::post('getResultByDate', [ResultMasterController::class, 'get_result_by_date']);
     Route::post('createSuperStockist', [SuperStockistController::class, 'create_super_stockist']);
+    Route::get('stockistsBySuperStockist/{id}',[StockistController::class, 'get_stockist_by_super_stockist']);
 
     Route::post('cPanel/barcodeReportByDate', [CPanelReportController::class, 'barcode_wise_report_by_date']);
     // Route::post('stockist/customerSaleReports', [StockistController::class, 'customer_sale_reports']);
@@ -224,6 +227,8 @@ Route::group(array('prefix' => 'dev'), function() {
     // Route::put('terminals',[TerminalController::class, 'update_terminal']);
     // Route::get('terminals/{id}',[TerminalController::class, 'get_stockist_by_terminal_id']);
     // Route::put('terminals/balance',[TerminalController::class, 'update_balance_to_terminal']);
+
+     Route::get('terminalBySuperStockist/{id}',[TerminalController::class, 'terminal_by_super_stockist']);
 
 
     // Route::post('createAutoResult', [CentralController::class, 'createResult']);

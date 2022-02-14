@@ -75,6 +75,8 @@ class PlayController extends Controller
         DB::beginTransaction();
         try{
 
+            $user = User::find($inputPlayMaster->terminalId);
+
             $playMaster = new PlayMaster();
             $playMaster->draw_master_id = $inputPlayMaster->drawMasterId;
             $playMaster->user_id = $inputPlayMaster->terminalId;
@@ -94,7 +96,7 @@ class PlayController extends Controller
                     $playDetails->number_combination_id = $detail->numberCombinationId;
                     $playDetails->quantity = $detail->quantity;
                     $playDetails->mrp = $detail->mrp;
-                    $playDetails->commission = $gameType->commission;
+                    $playDetails->commission = $user->commission;
                     $playDetails->payout = $gameType->payout;
                     $playDetails->save();
                     $output_play_details[] = $playDetails;

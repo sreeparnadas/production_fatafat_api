@@ -112,6 +112,15 @@ class StockistController extends Controller
         return StockistResource::collection($stockists);
     }
 
+    public function get_stockist_by_super_stockist($id){
+
+        $data = StockistToTerminal::select(DB::raw("stockist_to_terminals.super_stockist_id, users.id, users.user_name,users.email, users.user_type_id,users.closing_balance, users.commission"))
+            ->join('users','users.id','stockist_to_terminals.stockist_id')
+            ->where('stockist_to_terminals.super_stockist_id',$id)
+            ->get();
+        return response()->json(['success'=> 1, 'data' => StockistResource::collection($data)], 200);
+    }
+
     public function get_stockist($id){
 
 //        $stockists = UserType::find(3)->users;
