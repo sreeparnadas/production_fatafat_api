@@ -117,6 +117,7 @@ class StockistController extends Controller
         $data = StockistToTerminal::select(DB::raw("stockist_to_terminals.super_stockist_id, users.id, users.user_name,users.email, users.user_type_id,users.closing_balance, users.commission"))
             ->join('users','users.id','stockist_to_terminals.stockist_id')
             ->where('stockist_to_terminals.super_stockist_id',$id)
+            ->distinct()
             ->get();
         return response()->json(['success'=> 1, 'data' => StockistResource::collection($data)], 200);
     }

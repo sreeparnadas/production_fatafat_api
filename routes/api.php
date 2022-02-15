@@ -115,6 +115,9 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     Route::post('terminal/barcodeReport',[TerminalReportController::class, 'barcode_wise_report_by_terminal']);
     Route::post('terminal/terminal_sale_reports', [TerminalReportController::class, 'terminal_sale_reports']);
 
+    Route::post('superStockist/barcodeReportByDate', [SuperStockistController::class, 'barcode_wise_report_by_date']);
+    Route::post('superStockist/customerSaleReports', [SuperStockistController::class, 'customer_sale_reports']);
+
     Route::post('stockist/customerSaleReports', [StockistController::class, 'customer_sale_reports']);
     Route::post('stockist/barcodeReportByDate', [StockistController::class, 'barcode_wise_report_by_date']);
 
@@ -141,12 +144,13 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
 });
 
 
-
-
 Route::group(array('prefix' => 'dev'), function() {
 
     Route::get('getSuperStockist', [SuperStockistController::class, 'get_all_super_stockist']);
     Route::put('superStockist', [SuperStockistController::class, 'update_super_stockist']);
+
+    Route::post('superStockist/barcodeReportByDate', [SuperStockistController::class, 'barcode_wise_report_by_date']);
+    Route::post('superStockist/customerSaleReports', [SuperStockistController::class, 'customer_sale_reports']);
 
     Route::get('activateGame/{id}', [GameController::class, 'activate_game']);
 

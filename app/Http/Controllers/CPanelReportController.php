@@ -42,9 +42,6 @@ class CPanelReportController extends Controller
         $start_date = $requestedData->startDate;
         $end_date = $requestedData->endDate;
 
-
-//        $x = $this->get_total_quantity_by_barcode(1);
-
         $data = PlayMaster::select('play_masters.id as play_master_id','games.game_name', DB::raw('substr(play_masters.barcode_number, 1, 8) as barcode_number')
             ,'draw_masters.visible_time as draw_time', 'games.game_name',
             'users.email as terminal_pin','play_masters.created_at as ticket_taken_time'
@@ -67,7 +64,6 @@ class CPanelReportController extends Controller
             $detail->amount = $this->get_total_amount_by_barcode($detail->play_master_id);
         }
         return response()->json(['success'=> 1, 'data' => $data], 200);
-
     }
 
 
