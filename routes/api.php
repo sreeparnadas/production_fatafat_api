@@ -140,6 +140,7 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     Route::get('getSuperStockist', [SuperStockistController::class, 'get_all_super_stockist']);
     Route::post('createSuperStockist', [SuperStockistController::class, 'create_super_stockist']);
     Route::put('superStockist', [SuperStockistController::class, 'update_super_stockist']);
+    Route::put('superStockists/balance',[SuperStockistController::class, 'update_balance_to_super_stockist']);
 
 });
 

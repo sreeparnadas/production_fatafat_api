@@ -6,11 +6,14 @@ use App\Http\Resources\StockistResource;
 use App\Http\Resources\SuperStockiestResource;
 use App\Models\PlayDetails;
 use App\Models\PlayMaster;
+use App\Models\RechargeToUser;
 use App\Models\StockistToTerminal;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class SuperStockistController extends Controller
 {
@@ -53,6 +56,50 @@ class SuperStockistController extends Controller
         $user->save();
 
         return response()->json(['success'=>1, 'data' => $user], 200);
+    }
+
+    public function update_balance_to_super_stockist(Request $request){
+        $requestedData = (object)$request->json()->all();
+        $rules = array(
+            'beneficiaryUid'=> ['required',
+                function($attribute, $value, $fail){
+                    $stockist=User::where('id', $value)->where('user_type_id','=',5)->first();
+                    if(!$stockist){
+                        return $fail($value.' is not a valid super stockist id');
+                    }
+                }],
+        );
+        $messages = array(
+            'beneficiaryUid.required' => "Super Stockist required"
+        );
+
+        $validator = Validator::make($request->all(),$rules,$messages);
+        if ($validator->fails()) {
+            return response()->json(['success'=>0, 'data' => $messages], 500);
+        }
+
+
+        DB::beginTransaction();
+        try{
+            $requestedData = (object)$request->json()->all();
+            $beneficiaryUid = $requestedData->beneficiaryUid;
+            $amount = $requestedData->amount;
+            $beneficiaryObj = User::find($beneficiaryUid);
+            $beneficiaryObj->closing_balance = $beneficiaryObj->closing_balance + $amount;
+            $beneficiaryObj->save();
+
+            $rechargeToUser = new RechargeToUser();
+            $rechargeToUser->beneficiary_uid = $requestedData->beneficiaryUid;
+            $rechargeToUser->recharge_done_by_uid = $requestedData->rechargeDoneByUid;
+            $rechargeToUser->amount = $requestedData->amount;
+            $rechargeToUser->save();
+            DB::commit();
+
+        }catch(\Exception $e){
+            DB::rollBack();
+            return response()->json(['success'=>0, 'data' => null, 'error'=>$e->getMessage()], 500);
+        }
+        return response()->json(['success'=>1,'data'=> new StockistResource($beneficiaryObj)], 200,[],JSON_NUMERIC_CHECK);
     }
 
     public function barcode_wise_report_by_date(Request $request){
