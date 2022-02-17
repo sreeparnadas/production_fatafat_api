@@ -31,6 +31,7 @@ class SuperStockistController extends Controller
         $user->email = $requestedData->pin;
         $user->password = md5($requestedData->pin);
         $user->user_type_id = 5;
+        $user->commission = $requestedData->commission;
         $user->opening_balance = 0;
         $user->closing_balance = 0;
         $user->save();
