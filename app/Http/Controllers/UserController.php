@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -82,5 +83,13 @@ class UserController extends Controller
         }
 
         return response()->json(['success'=>1,'data'=> new UserResource($user)], 200,[],JSON_NUMERIC_CHECK);
+    }
+    public function pin_availability(Request $request){
+        $requestedData = (object)$request->json()->all();
+        $data = User::whereEmail($requestedData->pin)->first();
+        if($data){
+            return response()->json(['success'=>0], 200,[],JSON_NUMERIC_CHECK);
+        }
+        return response()->json(['success'=>1], 200,[],JSON_NUMERIC_CHECK);
     }
 }
