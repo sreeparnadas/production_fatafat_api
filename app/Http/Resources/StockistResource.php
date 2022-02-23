@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\User;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class StockistResource extends JsonResource
@@ -21,6 +22,7 @@ class StockistResource extends JsonResource
             'pin' => $this->email,
 //            'userTypeId' => ($this->user_type)->id,
             'superStockiestId' => $this->super_stockist_id,
+            'superStockistName' =>User::find($this->super_stockist_id),
             'userTypeId' => $this->user_type_id,
             'balance' => $this->closing_balance,
             'commission' => $this->commission,
