@@ -102,11 +102,14 @@ class StockistController extends Controller
     public function get_all_stockists(){
 
 //        $stockists = UserType::find(3)->users;
-        $stockists = User::select(DB::raw("users.id, users.user_name, users.commission, users.email, users.password, users.user_type_id, users.mobile1, stockist_to_terminals.super_stockist_id , users.closing_balance, users.opening_balance, stockist_to_terminals.stockist_id"))
-            ->join('user_types','user_types.id','users.user_type_id')
-            ->leftJoin('stockist_to_terminals','users.id','stockist_to_terminals.stockist_id')
-            ->where('user_type_id',3)
-            ->get();
+        // $stockists = User::select(DB::raw("users.id, users.user_name, users.commission, users.email, users.password, users.user_type_id, users.mobile1, stockist_to_terminals.super_stockist_id , users.closing_balance, users.opening_balance, stockist_to_terminals.stockist_id"))
+        //     ->join('user_types','user_types.id','users.user_type_id')
+        //     ->leftJoin('stockist_to_terminals','users.id','stockist_to_terminals.stockist_id')
+        //     ->where('user_type_id',3)
+        //     ->get();
+
+
+        $stockists = User::whereUserTypeId(3)->get();
 
 //        return response()->json(['success'=>1,'data'=>$stockists], 200,[],JSON_NUMERIC_CHECK);
         return StockistResource::collection($stockists);

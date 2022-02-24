@@ -229,7 +229,7 @@ Route::group(array('prefix' => 'dev'), function() {
     // Route::put('stockists/balance',[StockistController::class, 'update_balance_to_stockist']);
 
 
-    // Route::get('terminals',[TerminalController::class, 'get_all_terminals']);
+    Route::get('terminals',[TerminalController::class, 'get_all_terminals']);
     // Route::post('terminals',[TerminalController::class, 'create_terminal']);
     // Route::put('terminals',[TerminalController::class, 'update_terminal']);
     // Route::get('terminals/{id}',[TerminalController::class, 'get_stockist_by_terminal_id']);
