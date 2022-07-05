@@ -22,7 +22,7 @@ class StockistResource extends JsonResource
             'userName' => $this->user_name,
             'pin' => $this->email,
 //            'userTypeId' => ($this->user_type)->id,
-            // 'superStockiestId' => $this->super_stockist_id,
+//             'superStockiestId' => $this->super_stockist_id,
             'superStockiest' => new SuperStockiestResource(User::find((StockistToTerminal::whereStockistId($this->id)->first())->super_stockist_id)),
             // 'superStockistName' =>User::find($this->super_stockist_id),
             // 'superStockistName' =>User::find($this->super_stockist_id),

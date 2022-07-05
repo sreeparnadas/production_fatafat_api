@@ -111,10 +111,24 @@ class TerminalController extends Controller
         $terminal->commission = $requestedData->commission;
         $terminal->save();
 
+
         $stockistToTerminal = StockistToTerminal::where('terminal_id',$terminalId)->first();
+        $tempSt = $stockistToTerminal->stockist_id;
+        $tempSSt = $stockistToTerminal->super_stockist_id;
+
         if(!empty($stockistToTerminal)){
             $stockistToTerminal->stockist_id = $stockist_id;
+            $stockistToTerminal->super_stockist_id =  (StockistToTerminal::where('stockist_id',$stockist_id)->first())->super_stockist_id;
             $stockistToTerminal->save();
+
+            $stockistToTerminal1 = StockistToTerminal::where('stockist_id',$tempSt)->first();
+            if(empty($stockistToTerminal1)){
+                $stockistToTerminal1 = new StockistToTerminal();
+                $stockistToTerminal1->super_stockist_id = $tempSSt;
+                $stockistToTerminal1->stockist_id = $tempSt;
+                $stockistToTerminal1->save();
+            }
+
         }else{
             $stockistToTerminal = new StockistToTerminal();
             $stockistToTerminal->terminal_id = $terminalId;
@@ -122,7 +136,7 @@ class TerminalController extends Controller
             $stockistToTerminal->save();
         }
 
-        return response()->json(['success'=>1,'data'=> new TerminalResource($terminal), 'test1'=> $stockistToTerminal], 200,[],JSON_NUMERIC_CHECK);
+        return response()->json(['success'=>1,'data'=> new TerminalResource($terminal), 'test1'=> $stockistToTerminal1], 200,[],JSON_NUMERIC_CHECK);
         // return response()->json(['data'=> $stockistToTerminal]);
     }
 
