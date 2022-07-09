@@ -96,7 +96,7 @@ class PlayController extends Controller
                     $playDetails->number_combination_id = $detail->numberCombinationId;
                     $playDetails->quantity = $detail->quantity;
                     $playDetails->mrp = $detail->mrp;
-                    $playDetails->commission = $user->commission;
+                    $playDetails->commission = $gameType->commission;
                     $playDetails->payout = $gameType->payout;
                     $playDetails->save();
                     $output_play_details[] = $playDetails;
