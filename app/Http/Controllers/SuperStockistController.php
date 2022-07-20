@@ -45,7 +45,7 @@ class SuperStockistController extends Controller
             $stockistToTerminal->save();
         }
 
-        return response()->json(['success'=>1, 'data' => $user], 200);
+        return response()->json(['success'=>1, 'data' => new SuperStockiestResource($user)], 200);
     }
 
     public function update_super_stockist(Request $request){
@@ -55,7 +55,7 @@ class SuperStockistController extends Controller
         $user->user_name = $requestedData->userName;
         $user->save();
 
-        return response()->json(['success'=>1, 'data' => $user], 200);
+        return response()->json(['success'=>1, 'data' =>$user], 200);
     }
 
     public function update_balance_to_super_stockist(Request $request){
